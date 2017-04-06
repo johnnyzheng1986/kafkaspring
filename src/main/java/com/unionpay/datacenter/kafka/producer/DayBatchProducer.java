@@ -20,14 +20,13 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.unionpay.datacenter.kafka.dao.DayBatchDao;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Resource;
@@ -65,7 +64,9 @@ public class DayBatchProducer extends Thread {
 		try {
 			producer.send(new ProducerRecord<>(topic, messageNo, dayBathJSON)).get();
 			System.out.println("Sent message: (" + messageNo + ", " + dayBathJSON + ")");
-		} catch (InterruptedException | ExecutionException e) {
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
 		++messageNo;
